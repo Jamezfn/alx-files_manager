@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start-server": "nodemon --exec babel-node --presets @babel/preset-env server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node --presets @babel/preset-env"
   },
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/Jamezfn/alx-files_manager#readme",
   "dependencies": {
+    "express": "^5.1.0",
     "mongodb": "^6.20.0",
     "nodemon": "^3.1.10",
     "redis": "^5.9.0"
