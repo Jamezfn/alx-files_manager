@@ -11,7 +11,7 @@ fileQueue.process('generateThumbnails', async (job) => {
 	const { userId, fileId } = job.data;
 
 	if (!fileId) {
-		thow new Error('Missing fileId');
+		throw new Error('Missing fileId');
 	}
 
 	if (!userId) {
