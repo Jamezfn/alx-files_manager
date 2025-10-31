@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Jamezfn/alx-files_manager#readme",
   "dependencies": {
+    "bull": "^4.16.5",
     "express": "^5.1.0",
     "mongodb": "^6.20.0",
     "nodemon": "^3.1.10",

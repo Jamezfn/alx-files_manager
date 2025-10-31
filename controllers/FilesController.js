@@ -6,8 +6,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { ObjectId } from 'mongodb';
 import redisClient from '../utils/redis.js';
 import dbClient from '../utils/db.js';
+import Queue from 'bull';
 
 const FOLDER_PATH = process.env.FOLDER_PATH || path.join(os.tmpdir(), 'files_manager');
+const fileQueue = new Queue('fileQueue');
 
 export default class FilesController {
 	static async postUpload(req, res) {
@@ -81,6 +83,14 @@ export default class FilesController {
 
 			fileDoc.localPath = absolutePath;
 			result = await filesCollection.insertOne(fileDoc);
+
+			if (type === 'image') {
+				fileQueue.add('generateThumbnails', {
+					userId: userId.toString(),
+					fileId: result.insertedId.toString(),
+				}
+				);
+			}
 		}
 		
 		const newFile = {
