@@ -2,8 +2,11 @@ import { ObjectId } from 'mongodb';
 import sha1 from 'sha1';
 import dbClient from '../utils/db.js';
 import redisClient from '../utils/redis.js';
+import Queue from 'bull';
 
 export default class UsersController {
+	static userQueue = new Queue('userQueue');
+
 	static async postNew(req, res) {
 		const { email, password } = req.body;
 		if (!email) {
@@ -26,6 +29,8 @@ export default class UsersController {
 			email,
 			password: hashedPassword,
 		});
+
+		await UsersController.userQueue.add('sendWelcomeEmail', { userId: result.insertedId.toString() });
 
 		const newUser = {
 			id: result.insertedId.toString(),
